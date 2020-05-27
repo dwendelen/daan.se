@@ -1,0 +1,16 @@
+= Domain
+
+== DNS
+Is registered and managed at https://nameisp.com
+
+Is configured to check the nameservers of https://dynv6.com
+
+== Dynamic DNS
+Is done by https://dynv6.com and is free
+
+We only use AAAA records (IPv6)
+
+See `/dynv6` for client to automatically update the DNS record
+
+== Certificate
+We will use lets encrypt which is free and automated
