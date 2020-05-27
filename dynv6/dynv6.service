@@ -1,11 +1,13 @@
 [Unit]
-Description=Example systemd service.
+Description=Client to update DNS records of daan.se
 Requires=network-online.target
 After=network-online.target
 
 [Service]
 Type=simple
-ExecStart=/bin/bash /usr/bin/test_service.sh
+User=dynv6
+ExecStart=/usr/local/bin/dynv6 10s /usr/local/etc/dynv6/token 14:da:e9:51:ba:dd daan.se
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
