@@ -1,0 +1,26 @@
+Build
+[source]
+----
+go build src/main/dynv6.go
+----
+
+Install
+[source]
+----
+sudo useradd -r -s /usr/sbin/nologin dynv6
+cp dynv6 /usr/local/bin
+chown dynv6:dynv6 /usr/local/bin/dynv6
+cp dynv6.service /etc/systemd/system
+systemctl daemon-reload
+systemctl enable dynv6.service
+systemctl start dynv6.service
+----
+
+Configure
+[source]
+----
+vi /usr/local/etc/dynv6/token
+chmod 600 /usr/local/etc/dynv6/token
+chown -R dynv6:dynv6 /usr/local/etc/dynv6
+----
+
