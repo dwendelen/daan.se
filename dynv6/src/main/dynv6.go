@@ -4,23 +4,29 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
 func main() {
 	if len(os.Args) == 1 {
-		fmt.Println("Usage dynv6 <interval> <token> <mac> <zone>")
+		fmt.Println("Usage dynv6 <interval> <path-to-file-with-token> <mac> <zone>")
 	}
 
 	duration, err := time.ParseDuration(os.Args[1])
 	if err != nil {
 		log.Fatal("Could not parse duration", err)
 	}
-	token := os.Args[2]
+	tokenAsBytes, err := ioutil.ReadFile(os.Args[2])
+	if err != nil {
+		log.Fatal("Could not open token file", err)
+	}
+	token := strings.TrimSpace(string(tokenAsBytes))
 	mac, err := net.ParseMAC(os.Args[3])
 	if err != nil {
 		log.Fatal("Could not parse mac address", err)
