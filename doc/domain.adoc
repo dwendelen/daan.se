@@ -13,4 +13,23 @@ We only use AAAA records (IPv6)
 See `/dynv6` for client to automatically update the DNS record
 
 == Certificate
-We will use lets encrypt which is free and automated
+Wanted to use letsencrypt which is free and automated
+but it did not work
+
+=== Register certificates
+Add two files (pem format) in `certificate`
+
+- `daan.se.crt`
+- `daan.se.key`
+
+Dry run
+[source]
+----
+helm template certificate
+----
+
+Actual run
+[source]
+----
+helm template certificate | kubectl apply -f -
+----
