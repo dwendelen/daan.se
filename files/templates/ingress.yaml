@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: files
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  tls:
+    - hosts:
+        - daan.se
+      secretName: daan-se-tls
+  rules:
+    - host: daan.se
+      http:
+        paths:
+          - path: {{ .Values.context }}(/|$)(.*)
+            backend:
+              serviceName: files
+              servicePort: http
