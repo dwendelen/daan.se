@@ -16,6 +16,14 @@ See `/dynv6` for client to automatically update the DNS record
 Wanted to use letsencrypt which is free and automated
 but it did not work
 
+Now certificate from https://comodosslstore.com/ (Product = Positive SSL).
+
+=== Renew
+- Use HTTPS validation
+- Put the file in /var/www/.well-known/...
+- Add ipv4 address in dynv6
+- Setup correct port forward
+
 === Register certificates
 Add two files (pem format) in `certificate`
 
