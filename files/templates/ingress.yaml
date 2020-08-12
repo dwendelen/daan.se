@@ -26,12 +26,20 @@ spec:
   tls:
     - hosts:
         - daan.se
+        - www.daan.se
       secretName: daan-se-tls
   rules:
+    - host: www.daan.se
+      http:
+        paths:
+          - path: /.well-known
+            backend:
+              serviceName: files
+              servicePort: http
     - host: daan.se
       http:
         paths:
-          - path: /.well-known(/|$)(.*)
+          - path: /.well-known
             backend:
               serviceName: files
               servicePort: http
