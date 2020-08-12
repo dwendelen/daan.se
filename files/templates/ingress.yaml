@@ -17,3 +17,21 @@ spec:
             backend:
               serviceName: files
               servicePort: http
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: well-known
+spec:
+  tls:
+    - hosts:
+        - daan.se
+      secretName: daan-se-tls
+  rules:
+    - host: daan.se
+      http:
+        paths:
+          - path: /.well-known(/|$)(.*)
+            backend:
+              serviceName: files
+              servicePort: http
