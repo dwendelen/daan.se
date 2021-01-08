@@ -1,0 +1,38 @@
+= dnsmasq
+
+Runs on server
+
+== Info
+https://wiki.archlinux.org/index.php/dnsmasq
+
+== Files etc
+/etc/dnsmasq.conf
+systemctl status dnsmasq
+
+== DNS
+We disabled it with port=0
+
+
+== DHCP
+Range is set with
+- `dhcp-range`
+
+Gateway is set with the following two
+- `dhcp-option=3,192.168.1.1`
+- `dhcp-option=option:router,192.168.1.1` (or maybe not)
+
+For DNS we disable /etc/resolve.conf because it contains `nameserver 127.0.0.53`.
+We do this like this:
+- `no-resolv`
+
+The DNS records is provided by
+- `dhcp-option=6,192.168.1.1`
+Yes, the router is the DNS server
+
+Other settings
+- `dhcp-option=option:ntp-server,195.13.1.153`
+
+
+
+
+

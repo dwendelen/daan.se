@@ -1,0 +1,7 @@
+= Network
+Uses netplan
+
+== File
+https://netplan.io/
+
+/etc/netplan/00-installer-config.yaml
