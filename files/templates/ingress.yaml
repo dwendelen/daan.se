@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: files
@@ -14,11 +14,14 @@ spec:
       http:
         paths:
           - path: {{ .Values.context }}(/|$)(.*)
+            pathType: Prefix
             backend:
-              serviceName: files
-              servicePort: http
+              service:
+                name: files
+                port:
+                  name: http
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: well-known
@@ -33,13 +36,19 @@ spec:
       http:
         paths:
           - path: /.well-known
+            pathType: Exact
             backend:
-              serviceName: files
-              servicePort: http
+              service:
+                name: files
+                port:
+                  name: http
     - host: daan.se
       http:
         paths:
           - path: /.well-known
+            pathType: Exact
             backend:
-              serviceName: files
-              servicePort: http
+              service:
+                name: files
+                port:
+                  name: http
