@@ -5,6 +5,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
+  ingressClassName: public
   tls:
     - hosts:
         - daan.se
@@ -26,6 +27,7 @@ kind: Ingress
 metadata:
   name: well-known
 spec:
+  ingressClassName: public
   tls:
     - hosts:
         - daan.se
