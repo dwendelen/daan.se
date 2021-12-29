@@ -6,7 +6,7 @@ After=network-online.target
 [Service]
 Type=simple
 User=dynv6
-ExecStart=/usr/local/bin/dynv6 10s /usr/local/etc/dynv6/token 14:da:e9:51:ba:dd daan.se
+ExecStart=/usr/local/bin/dynv6 10s 14:da:e9:51:ba:dd scurfles.daan.se
 Restart=always
 
 [Install]

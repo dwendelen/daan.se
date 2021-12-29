@@ -1,6 +1,7 @@
 Build
 [source]
 ----
+go get github.com/aws/aws-sdk-go/service/route53
 go build src/main/dynv6.go
 ----
 
@@ -19,8 +20,10 @@ systemctl start dynv6.service
 Configure
 [source]
 ----
-vi /usr/local/etc/dynv6/token
-chmod 600 /usr/local/etc/dynv6/token
-chown -R dynv6:dynv6 /usr/local/etc/dynv6
+mkdir -p /home/dynv6/.aws
+vi /home/dynv6/.aws/credentials
+chmod -R 700 /home/dynv6
+chmod 600 /home/dynv6/.aws/credentials
+chown -R dynv6:dynv6 /home/dynv6
 ----
 

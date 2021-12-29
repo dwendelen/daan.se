@@ -4,34 +4,30 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/route53"
 	"log"
 	"net"
-	"net/http"
 	"os"
-	"strings"
 	"time"
 )
 
 func main() {
-	if len(os.Args) == 1 {
-		fmt.Println("Usage dynv6 <interval> <path-to-file-with-token> <mac> <zone>")
+	if len(os.Args) < 5 {
+		fmt.Println("Usage dynv6 <interval> <mac> <zoneId> <domain>")
+		return
 	}
 
 	duration, err := time.ParseDuration(os.Args[1])
 	if err != nil {
 		log.Fatal("Could not parse duration", err)
 	}
-	tokenAsBytes, err := ioutil.ReadFile(os.Args[2])
-	if err != nil {
-		log.Fatal("Could not open token file", err)
-	}
-	token := strings.TrimSpace(string(tokenAsBytes))
-	mac, err := net.ParseMAC(os.Args[3])
+	mac, err := net.ParseMAC(os.Args[2])
 	if err != nil {
 		log.Fatal("Could not parse mac address", err)
 	}
-	zone := os.Args[4]
+	zoneId := os.Args[3]
+	domain := os.Args[4]
 
 	var lastSentIp net.IP = nil
 	for {
@@ -44,9 +40,10 @@ func main() {
 
 		if !bytes.Equal(ip, lastSentIp) {
 			fmt.Println("Sending new IP. New:", ip, "Old:", lastSentIp)
-			err := sendPrefix(zone, token, ip)
+			err := sendPrefix(zoneId, domain, ip)
 			if err != nil {
 				log.Println("Could not update ip, waiting an extra minute")
+				log.Println(err)
 				time.Sleep(1 * time.Minute)
 			} else {
 				lastSentIp = ip
@@ -57,16 +54,38 @@ func main() {
 	}
 }
 
-func sendPrefix(zone string, token string, ip net.IP) error {
-	url := fmt.Sprint("https://dynv6.com/api/update?zone=", zone, "&token=", token, "&ipv6=", ip)
-	response, err := http.Get(url)
+func sendPrefix(zoneId string, domain string, ip net.IP) error {
+	mySession, err := session.NewSession()
 	if err != nil {
 		return err
 	}
-	if response.StatusCode != 200 {
-		msg := fmt.Sprint("Wrong return code. Expected: 200, got: ", response.StatusCode)
-		return errors.New(msg)
+	client := route53.New(mySession)
+	act := "UPSERT"
+	ttl := int64(60)
+	typ := route53.RRTypeAaaa
+	val := ip.String()
+	_, err = client.ChangeResourceRecordSets(&route53.ChangeResourceRecordSetsInput{
+		HostedZoneId: &zoneId,
+		ChangeBatch: &route53.ChangeBatch{
+			Changes: []*route53.Change{{
+				Action: &act,
+				ResourceRecordSet: &route53.ResourceRecordSet{
+					Name: &domain,
+					TTL:  &ttl,
+					Type: &typ,
+					ResourceRecords: []*route53.ResourceRecord{{
+						Value: &val,
+					}},
+				},
+			}},
+			Comment: nil,
+		},
+	})
+
+	if err != nil {
+		return err
 	}
+
 	return nil
 }
 
