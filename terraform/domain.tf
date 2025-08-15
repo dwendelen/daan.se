@@ -39,6 +39,10 @@ resource "aws_route53domains_domain" "daan-se" {
     last_name         = "Wendelen"
     phone_number      = var.phone_number
     zip_code          = var.zip_code
+    extra_param {
+      name  = "SE_ID_NUMBER"
+      value = var.rijksregister_nummer
+    }
   }
 
   registrant_contact {
@@ -71,6 +75,10 @@ resource "aws_route53domains_domain" "daan-se" {
     last_name         = "Wendelen"
     phone_number      = var.phone_number
     zip_code          = var.zip_code
+    extra_param {
+      name  = "SE_ID_NUMBER"
+      value = var.rijksregister_nummer
+    }
   }
 
   tags = {

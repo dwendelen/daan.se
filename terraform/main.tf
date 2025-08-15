@@ -1,3 +1,5 @@
+# terraform plan --var-file=secret.tfvars
+
 terraform {
   required_providers {
     aws = {
