@@ -1,8 +1,6 @@
 resource "aws_route53_zone" "daan-se" {
   name = "daan.se"
-  tags = {
-    application: "daan-se"
-  }
+  tags = local.default-tags
 }
 
 variable "street" {
@@ -81,7 +79,5 @@ resource "aws_route53domains_domain" "daan-se" {
     }
   }
 
-  tags = {
-    application = "daan-se"
-  }
+  tags = local.default-tags
 }

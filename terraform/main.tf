@@ -14,6 +14,12 @@ provider "aws" {
   region = "eu-central-1"
 }
 
+provider "aws" {
+  alias = "us-east-1"
+  profile = "default"
+  region = "us-east-1"
+}
+
 terraform {
   backend "s3" {
     bucket = "daan-se-tf-state"
