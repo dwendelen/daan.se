@@ -7,7 +7,7 @@
     let canvas = document.getElementById("canvas");
     let ctx = canvas.getContext("2d");
 
-    let positions = [[1, 2], [1, 1], [2, 1], [3, 1], [3, 2]];
+    let positions = [[1, 1], [2, 1], [3, 1], [1, 2], [2, 2], [3, 2]];
 
     let intervalHandler = null;
 
@@ -18,8 +18,10 @@
             clearInterval(intervalHandler);
         }
         let speed = Number.parseFloat(document.getElementById("speed").value);
+        let prev = 0
         intervalHandler = setInterval(() => {
-            let toFill = Math.floor(Math.random() * 5);
+            let toFill = (prev + 1 + Math.floor(Math.random() * 5)) % 6;
+            prev = toFill
             draw();
             setTimeout(() => {
                 draw(toFill);
@@ -29,7 +31,7 @@
 
     function draw(toFill) {
         ctx.clearRect(0, 0, 1000, 1000)
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 6; i++) {
             let pos = positions[i];
             let delta;
             if(i === toFill) {
