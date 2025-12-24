@@ -24,7 +24,7 @@ resource "aws_route53_record" "web-validation" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = aws_route53_zone.daan-se.zone_id
+  zone_id         = local.zone-id
 }
 
 resource "aws_cloudfront_distribution" "web" {
@@ -119,7 +119,7 @@ resource "aws_s3_bucket_policy" "web" {
 }
 
 resource "aws_route53_record" "web" {
-  zone_id = aws_route53_zone.daan-se.zone_id
+  zone_id = local.zone-id
   for_each = {
     for a in aws_cloudfront_distribution.web.aliases : a => {}
   }
